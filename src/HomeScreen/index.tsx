@@ -9,8 +9,8 @@ import { selectImage, setImageContent } from '../store/slices/userImage';
 export const HomeScreen = () => {
 	const dispatch = useAppDispatch();
 
-	const {isLoading, predictImageContent} = useMobilenet();
-	const {getBreedPhotos, isLoading: isLoadingBreeds, photos} = useBreeds();
+	const {isLoading, predictImageContent, error: modelError} = useMobilenet();
+	const {getBreedPhotos, isLoading: isLoadingBreeds, photos, error: photosError} = useBreeds();
 
 	const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => dispatch(selectImage(e)), [dispatch]);
 
@@ -26,8 +26,8 @@ export const HomeScreen = () => {
   
 	return (
 		<>
-			<ImageSelector onInputChange={onInputChange} onLoad={handleLoad} isLoading={isLoading}/>
-			<PhotoGallery isLoading={isLoadingBreeds} urls={photos} getAlt={getAlt} getKey={getKey}/>
+			<ImageSelector onInputChange={onInputChange} error={modelError} onLoad={handleLoad} isLoading={isLoading}/>
+			<PhotoGallery isLoading={isLoadingBreeds} urls={photos} getAlt={getAlt} error={photosError} getKey={getKey}/>
 		</>
 	);
 };

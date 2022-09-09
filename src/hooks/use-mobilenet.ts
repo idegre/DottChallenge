@@ -1,10 +1,27 @@
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { AppError } from '../components/LoadingErrorContainer';
+
+export const errors = {
+	modelError: {
+		type: 'model_error',
+		msg: 'Failed to load model'
+	},
+	tfError: {
+		type: 'tf_error',
+		msg: 'Failed to initialize tensorflow'
+	},
+	classError: {
+		type: 'classification_error',
+		msg: 'Failed to classify image'
+	},
+};
 
 export const useMobilenet = () => {
 	const modelRef = useRef<mobilenet.MobileNet | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<AppError | null>(null);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -12,16 +29,15 @@ export const useMobilenet = () => {
 			.then(() => {
 				mobilenet.load()
 					.then((model) => {
-						console.log('model loaded', model);
 						modelRef.current = model;
 					})
 					.catch(() => {
-						console.log('model error');
+						setError(errors.modelError);
 					})
 					.finally(() => setIsLoading(false));
 			})
 			.catch(() => {
-				console.log('tf error');
+				setError(errors.tfError);
 				setIsLoading(false);
 			});
 	},[]);
@@ -33,9 +49,10 @@ export const useMobilenet = () => {
 			setIsLoading(false);
 			return data;
 		} catch {
+			setError(errors.classError);
 			setIsLoading(false);
 		}
 	},[setIsLoading]);
 
-	return {isLoading, predictImageContent};
+	return {isLoading, predictImageContent, error};
 };

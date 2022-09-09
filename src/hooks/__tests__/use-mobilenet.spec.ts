@@ -42,7 +42,7 @@ describe('mobilenet hook', () => {
 		expect(mobilenetSpy).toBeCalledTimes(1);
 		expect(tfSpy).toBeCalledTimes(1);
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		//check error
+		expect(renderedHook?.result?.current.error).toBe(null);
 	});
 	test('model fails to load', async () => {
             
@@ -58,7 +58,7 @@ describe('mobilenet hook', () => {
 		expect(mobilenetSpy).toBeCalledTimes(1);
 		expect(tfSpy).toBeCalledTimes(1);
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		//check error
+		expect(renderedHook?.result?.current.error).toStrictEqual({'msg': 'Failed to load model', 'type': 'model_error'});
 	});
 	test('tensorflow fails to start',async () => {
 
@@ -76,7 +76,7 @@ describe('mobilenet hook', () => {
 		expect(mobilenetSpy).toBeCalledTimes(0);
 		expect(tfSpy).toBeCalledTimes(1);
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		//check error
+		expect(renderedHook?.result?.current.error).toStrictEqual({'msg': 'Failed to initialize tensorflow', 'type': 'tf_error'});
 	});
 	test('predicts and returs data', async () => {
 		const mobilenetSpy = jest.spyOn(mobilenet, 'load');
@@ -92,12 +92,13 @@ describe('mobilenet hook', () => {
 		expect(mobilenetSpy).toBeCalledTimes(1);
 		expect(tfSpy).toBeCalledTimes(1);
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		//check error
+		expect(renderedHook?.result?.current.error).toBe(null);
 
 		await act(async () => {
 			const data = await renderedHook.result.current.predictImageContent({} as HTMLImageElement);
 			expect(data?.length).toBe(1);
 			expect(data?.[0].className).toBe('mock_class');
+			expect(renderedHook?.result?.current.error).toBe(null);
 		});
 	});
 	test('fails to predict and returns error', async () => {
@@ -122,11 +123,12 @@ describe('mobilenet hook', () => {
 		expect(mobilenetSpy).toBeCalledTimes(1);
 		expect(tfSpy).toBeCalledTimes(1);
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		//check error
+		expect(renderedHook?.result?.current.error).toBe(null);
 
 		await act(async () => {
 			const data = await renderedHook.result.current.predictImageContent({} as HTMLImageElement);
 			expect(data).toBe(undefined);
+			expect(renderedHook?.result?.current.error).toStrictEqual({'msg': 'Failed to classify image', 'type': 'classification_error'});
 		});
 	});
 });

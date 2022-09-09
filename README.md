@@ -8,9 +8,14 @@ tfjs lives within a hook, initially I planned on have a class for it and have it
 
 the use effect loads the model and could clear the model, but it appears tfjs doesnt have that functionality yet
 
+most of the apps functionality lives within the app HomeScreen Component and the use-breeds and use-mobilenet hooks that centralize all of the logic for them nad expose a limited number of props and callbacks. Allowing for all other components to be mostly visual. 
+
+these hooks also expose normalized errors that can be easily be handled by the apps load & error component
+
+while I was planing to keep most of the logic in async thunks, the structure of RTk's hooks makes this hard, so now the app is mostly based in hooks.
+
 ## instalation
 
-add .env file with BREEDS_API_URL 
 install node modules
 
 ## Available Scripts
@@ -38,3 +43,6 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `yarn jest`
+
+Runs all avaliable tests
