@@ -1,21 +1,24 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-// import {API_URL} from '@env';
-import {TaskResponse} from './types';
 
-export const rootResponseTransform = (data: TaskResponse) => {
-  console.log(data);
-  return data;
-};
+import {BreedListResponse, BreedResponse} from './types';
+
+export const rootResponseTransform = (data: BreedResponse) => data.message;
+
+export const listResponseTransform = (data: BreedListResponse): string[] => Object.entries(data.message).flat(2)
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({baseUrl: 'API_URL'}),
+  baseQuery: fetchBaseQuery({baseUrl: 'https://dog.ceo/api'}),
   reducerPath: 'breedImages',
   endpoints: build => ({
-    getTasks: build.query<TaskResponse, void>({
-      query: () => '/',
+    getPhotos: build.query<string[], string>({
+      query: (breed) => `/breed/${breed}/images`,
       transformResponse: rootResponseTransform,
+    }),
+    getList: build.query<string[], void>({
+      query: () => `/breeds/list/all`,
+      transformResponse: listResponseTransform,
     }),
   }),
 });
 
-export const {useGetTasksQuery, useLazyGetTasksQuery} = api;
+export const {useGetPhotosQuery, useLazyGetPhotosQuery, useGetListQuery, useLazyGetListQuery} = api;

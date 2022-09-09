@@ -1,18 +1,10 @@
-export type TaskResponse = {
-  tasks: Task[];
-  all_tasks_completed: boolean;
-  username: string;
+export type BreedResponse = {
+  message: string[];
+  status: string //its not documented what the other statuses are
 };
 
-export enum TaskStatus {
-  DONE = 'done',
-  PENDING = 'pending',
-  IN_PROGRESS = 'in-progress',
-}
-
-export type Task = {
-  id: string;
-  name: string;
-  due_date: string;
-  status: TaskStatus;
+export type BreedListResponse = {
+  message: {[breed: string]: string[]}
+  status: string //its not documented what the other statuses are
 };
+

@@ -1,27 +1,20 @@
-import React, { ChangeEvent, LegacyRef, SyntheticEvent, useCallback, useEffect, useRef } from 'react';
+import React, { ChangeEvent, LegacyRef, SyntheticEvent, useRef } from 'react';
 import {useSelector} from 'react-redux';
 import {LoadingErrorContainer} from '../../components/LoadingErrorContainer';
-import { useMobilenet } from '../../hooks/use-mobilenet';
-import {useAppDispatch} from '../../store/hooks';
-import {selectImage, setImageContent} from '../../store/slices/userImage';
 import {getUserImageAsset} from '../../store/slices/userImage/selectors';
 import { Input } from './styled';
 
-export const ImageSelector = () => {
-  const dispatch = useAppDispatch();
+type Props = {
+  onLoad: (evt: SyntheticEvent<HTMLImageElement, Event>) => void,
+  onInputChange: (evt: ChangeEvent<HTMLInputElement>) => void,
+  isLoading?: boolean
+}
+
+export const ImageSelector = ({onLoad, onInputChange, isLoading = false}: Props) => {
   const selectedImage = useSelector(getUserImageAsset);
 
   const inputRef = useRef<LegacyRef<HTMLInputElement>>()
   const imageRef = useRef<LegacyRef<HTMLImageElement>>()
-
-  const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => dispatch(selectImage(e)), [dispatch])
-
-  const {isLoading, predictImageContent} = useMobilenet()
-
-  const handleLoad = useCallback(async (imgEvt: SyntheticEvent<HTMLImageElement, Event>) => {
-    const classes = await predictImageContent(imgEvt.currentTarget)
-    classes && dispatch(setImageContent(classes))
-  }, [predictImageContent, dispatch])
 
   return (
     <LoadingErrorContainer isLoading={isLoading}>
@@ -29,8 +22,7 @@ export const ImageSelector = () => {
         {!!selectedImage ? (
           <img
             src={selectedImage}
-            onLoad={handleLoad}
-            onInput={console.log}
+            onLoad={onLoad}
             alt="user's upload"
             ref={imageRef.current}
           />

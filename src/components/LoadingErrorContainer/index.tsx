@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import React from 'react';
+import { Container, LoaderContainer } from './styled';
 
 type Props = {
   children?: JSX.Element;
@@ -9,7 +10,7 @@ export const LoadingErrorContainer = ({
   children,
   isLoading = false,
 }: Props) => {
-  return <Suspense fallback={<div>loading</div>}>
-    {children}
-  </Suspense>
+  return (
+    <Container>{isLoading && <LoaderContainer>loading</LoaderContainer>}{children}</Container>
+  );
 };

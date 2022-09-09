@@ -6,6 +6,13 @@ I use styled components and redux toolkit to manage the state and requests
 
 tfjs lives within a hook, initially I planned on have a class for it and have it live in the userImage state and be used through thunk actions. but redux toolkit doesnt have proper use of asynk thunks outside of requests
 
+the use effect loads the model and could clear the model, but it appears tfjs doesnt have that functionality yet
+
+## instalation
+
+add .env file with BREEDS_API_URL 
+install node modules
+
 ## Available Scripts
 
 In the project directory, you can run:

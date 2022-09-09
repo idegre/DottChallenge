@@ -1,28 +1,34 @@
-import {rootResponseTransform} from '..';
-import {TaskResponse} from '../types';
+import {listResponseTransform, rootResponseTransform} from '..';
+import { BreedResponse, BreedListResponse } from '../types';
 
-export const mockTaskResponse = {
-  tasks: [
-    {id: '1', name: 'Task 1 ', due_date: '9:00AM 12-1-2019', status: 'done'},
-    {
-      id: '2',
-      name: 'Task 2 ',
-      due_date: '11:00AM 12-1-2019',
-      status: 'in-progress',
-    },
-    {
-      id: '3',
-      name: 'Task 3 ',
-      due_date: '22:00AM 12-1-2019',
-      status: 'pending',
-    },
+export const mockBreedImages = {
+  message: [
+    'url1',
+    'url2',
+    'url3'
   ],
-  all_tasks_completed: false,
-  username: 'User',
-} as TaskResponse;
+  status: 'fulfilled'
+} as BreedResponse
+
+export const mockBreedList = {
+  message: {
+    breed1: [],
+    breed2: [
+      'subbreed1',
+      'subbreed2'
+    ],
+    breed3: [
+      'subbreed3'
+    ]
+  },
+  status: 'fulfilled'
+} as BreedListResponse;
 
 describe('Task API', () => {
-  test('transform function should work as expected', () => {
-    expect(rootResponseTransform(mockTaskResponse)).toBe(mockTaskResponse);
+  test('breed transform function should work as expected', () => {
+    expect(rootResponseTransform(mockBreedImages)).toBe(mockBreedImages.message);
+  });
+  test('list transform function should work as expected', () => {
+    expect(listResponseTransform(mockBreedList)).toBe(['breed1','breed2','subbreed1','subbreed2','breed3','subbreed3']);
   });
 });

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useMobilenet = () => {
     const modelRef = useRef<mobilenet.MobileNet | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         setIsLoading(true)
@@ -12,7 +12,6 @@ export const useMobilenet = () => {
             mobilenet.load()
                 .then((model) => {
                     modelRef.current = model
-                    console.log('model loaded')
                 })
                 .catch(() => {
                     console.log('model error')
@@ -26,9 +25,13 @@ export const useMobilenet = () => {
 
     const predictImageContent = useCallback(async (img: HTMLImageElement) => {
         setIsLoading(true)
-        const data = await modelRef.current?.classify(img)
-        setIsLoading(false)
-        return data;
+        try{
+            const data = await modelRef.current?.classify(img)
+            setIsLoading(false)
+            return data;
+        } catch {
+            setIsLoading(false)
+        }
     },[setIsLoading])
 
     return {isLoading, predictImageContent}
