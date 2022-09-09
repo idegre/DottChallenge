@@ -7,29 +7,29 @@ import { useAppDispatch } from '../store/hooks';
 import { selectImage, setImageContent } from '../store/slices/userImage';
 
 export const HomeScreen = () => {
-  const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch();
 
-  const {isLoading, predictImageContent} = useMobilenet()
-  const {getBreedPhotos, isLoading: isLoadingBreeds, photos} = useBreeds()
+	const {isLoading, predictImageContent} = useMobilenet();
+	const {getBreedPhotos, isLoading: isLoadingBreeds, photos} = useBreeds();
 
-  const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => dispatch(selectImage(e)), [dispatch])
+	const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => dispatch(selectImage(e)), [dispatch]);
 
-  const handleLoad = useCallback(async (imgEvt: SyntheticEvent<HTMLImageElement, Event>) => {
-    const classes = await predictImageContent(imgEvt.currentTarget)
-    classes && dispatch(setImageContent(classes))
-    classes?.length && getBreedPhotos(classes[0].className)
-  }, [predictImageContent, dispatch, getBreedPhotos])
+	const handleLoad = useCallback(async (imgEvt: SyntheticEvent<HTMLImageElement, Event>) => {
+		const classes = await predictImageContent(imgEvt.currentTarget);
+		classes && dispatch(setImageContent(classes));
+		classes?.length && getBreedPhotos(classes[0].className);
+	}, [predictImageContent, dispatch, getBreedPhotos]);
 
-  const getAlt = useCallback((i:number) => 'dogs',[])
+	const getAlt = useCallback((i:number) => 'dogs',[]);
 
-  const getKey = (url:string) => `${url.split('/').pop()}`
+	const getKey = (url:string) => `${url.split('/').pop()}`;
   
-  return (
-    <>
-      <ImageSelector onInputChange={onInputChange} onLoad={handleLoad} isLoading={isLoading}/>
-      <PhotoGallery isLoading={isLoadingBreeds} urls={photos} getAlt={getAlt} getKey={getKey}/>
-    </>
-  );
+	return (
+		<>
+			<ImageSelector onInputChange={onInputChange} onLoad={handleLoad} isLoading={isLoading}/>
+			<PhotoGallery isLoading={isLoadingBreeds} urls={photos} getAlt={getAlt} getKey={getKey}/>
+		</>
+	);
 };
 
 
