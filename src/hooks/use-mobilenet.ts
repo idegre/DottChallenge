@@ -2,19 +2,20 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppError } from '../components/LoadingErrorContainer';
+import locales from '../locales/en';
 
 export const errors = {
 	modelError: {
 		type: 'model_error',
-		msg: 'Failed to load model'
+		msg: locales.modelError
 	},
 	tfError: {
 		type: 'tf_error',
-		msg: 'Failed to initialize tensorflow'
+		msg: locales.tfError
 	},
 	classError: {
 		type: 'classification_error',
-		msg: 'Failed to classify image'
+		msg: locales.classifyError
 	},
 };
 

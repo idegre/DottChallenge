@@ -1,6 +1,9 @@
 import React from 'react';
 import { AppError, LoadingErrorContainer } from '../LoadingErrorContainer';
-import { Container, Image } from './styled';
+import { GalleryImage } from './components/GalleryImage';
+import { Container } from './styled';
+
+import locales from '../../locales/en';
 
 type Props = {
     isLoading?: boolean
@@ -11,18 +14,27 @@ type Props = {
 }
 
 export const Constants = {
-	NO_ITEM_CARD_ID: 'NO_ITEM_CARD_ID'
+	NO_ITEM_CARD_ID: 'NO_ITEM_CARD_ID',
+	IMG_DIMENTIONS: 200
 };
 
 export const PhotoGallery = ({isLoading, urls = [], getAlt, getKey, error}: Props) => {
 	return <LoadingErrorContainer isLoading={isLoading} error={error}>
-		{urls.length 
-			? <Container>
-				{urls && urls.map((url, index) => <Image key={getKey(url)} height={200} width={200} alt={getAlt(index)} src={url} loading="lazy" />)}
-			</Container> 
-			: <div data-testid={Constants.NO_ITEM_CARD_ID}>
-            No items to show
-			</div>
-		}
+		<Container>
+			{urls.length 
+				? urls && urls.map(
+					(url, index) => (
+						<GalleryImage 
+							key={getKey(url)}
+							dimentions={Constants.IMG_DIMENTIONS}
+							alt={getAlt(index)}
+							src={url}
+						/>
+					))
+				: (
+					<div data-testid={Constants.NO_ITEM_CARD_ID}>{locales.noItems}</div>
+				)
+			}
+		</Container> 
 	</LoadingErrorContainer>;
 };

@@ -10,6 +10,7 @@ export const CoverContainer = styled.div`
     height: 100%;
     background-color: white;
     display: flex;
-    justify-contents: center;
+    justify-items: center;
     align-items: center;
+    justify-content: center;
 `;
