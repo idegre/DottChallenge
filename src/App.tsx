@@ -4,7 +4,7 @@ import { HomeScreen } from './HomeScreen';
 import { store } from './store/store';
 
 export const App = () => (
-    <Provider store={store}>
-      <HomeScreen />
-    </Provider>
+	<Provider store={store}>
+		<HomeScreen />
+	</Provider>
 );

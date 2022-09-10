@@ -5,10 +5,10 @@ import { useMobilenet } from '../use-mobilenet';
 jest.mock('@tensorflow-models/mobilenet', () => ({
 	load: jest.fn(() => new Promise<MobileNet>(
 		(res, _) => res({
-			classify: (img: HTMLImageElement) => new Promise<{
-                className: string;
-                probability: number;
-            }[] | undefined>((res) => res([{className: 'mock_class', probability: 1}]))
+			classify: () => new Promise<ImageContent[] | undefined>(
+				(res) => res(
+					[{className: 'mock_class', probability: 1}]
+				))
 		} as unknown as MobileNet)
 	))
 }));
@@ -21,6 +21,7 @@ jest.mock('@tensorflow/tfjs', () => ({
 
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
+import { ImageContent } from '../../store/slices/userImage';
 
 type HookRes = RenderHookResult<void, ReturnType<typeof useMobilenet>>
 
@@ -107,10 +108,7 @@ describe('mobilenet hook', () => {
 
 		mobilenetSpy.mockImplementationOnce(jest.fn(() => new Promise<MobileNet>(
 			(res, _) => res({
-				classify: (img: HTMLImageElement) => new Promise<{
-                        className: string;
-                        probability: number;
-                    }[] | undefined>((_,rej) => rej())
+				classify: () => new Promise<ImageContent[] | undefined>((_,rej) => rej())
 			} as unknown as MobileNet)
 		)));
           

@@ -47,7 +47,9 @@ describe('use-breeds hook', () => {
 
 		expect(listSpy).toBeCalled();
 		expect(renderedHook?.result?.current.isLoading).toBe(false);
-		expect(renderedHook?.result?.current.error).toStrictEqual({'msg': 'We couldnt get the data', 'type': 'fetch_error'});
+		expect(renderedHook?.result?.current.error).toStrictEqual(
+			{'msg': 'We couldnt get the data', 'type': 'fetch_error'}
+		);
 	});
 	test('hook can find breed match and load images', async () => {
 

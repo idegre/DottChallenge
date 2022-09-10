@@ -20,7 +20,7 @@ export const HomeScreen = () => {
 		classes?.length && getBreedPhotos(classes[0].className);
 	}, [predictImageContent, dispatch, getBreedPhotos]);
 
-	const getAlt = useCallback((i:number) => 'dogs',[]);
+	const getAlt = useCallback(() => 'dogs',[]);
 
 	const getKey = (url:string) => `${url.split('/').pop()}`;
   

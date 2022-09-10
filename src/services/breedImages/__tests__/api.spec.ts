@@ -24,11 +24,20 @@ export const mockBreedList = {
 	status: 'fulfilled'
 } as BreedListResponse;
 
-describe('Task API', () => {
+describe('Dog API', () => {
 	test('breed transform function should work as expected', () => {
 		expect(rootResponseTransform(mockBreedImages)).toStrictEqual(mockBreedImages.message);
 	});
+	test('breed transform function should work as expected when empty', () => {
+		expect(rootResponseTransform({ message: [], status: 'fulfilled' })).toStrictEqual([]);
+	});
 	test('list transform function should work as expected', () => {
 		expect(listResponseTransform(mockBreedList)).toStrictEqual(['breed1','breed2','subbreed1','subbreed2','breed3','subbreed3']);
+	});
+	test('list transform function should work as expected when empty', () => {
+		expect(listResponseTransform({
+			message: {},
+			status: 'fulfilled'
+		})).toStrictEqual([]);
 	});
 });
