@@ -23,6 +23,7 @@ export const GalleryImage = ({dimentions, alt, src}: Props) => {
 
 	const handleError = useCallback(() => {
 		setError(LOAD_ERROR);
+		setLoading(false);
 	},[]);
 
 	return <LoadingErrorContainer isLoading={isLoading} error={error}>

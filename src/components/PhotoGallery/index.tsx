@@ -15,12 +15,13 @@ type Props = {
 
 export const Constants = {
 	NO_ITEM_CARD_ID: 'NO_ITEM_CARD_ID',
+	PHOTO_CONTAINER: 'PHOTO_CONTAINER',
 	IMG_DIMENTIONS: 200
 };
 
 export const PhotoGallery = ({isLoading, urls = [], getAlt, getKey, error}: Props) => {
 	return <LoadingErrorContainer isLoading={isLoading} error={error}>
-		<Container>
+		<Container data-testid={Constants.PHOTO_CONTAINER}>
 			{urls.length 
 				? urls && urls.map(
 					(url, index) => (

@@ -11,4 +11,15 @@ describe('gallery component', () => {
 		expect(mockGetAlt).toBeCalledTimes(0);
 		expect(mockGetKey).toBeCalledTimes(0);
 	});
+	test('renders all photos', () => {
+		const mockUrls = ['url1', 'url2', 'url3'];
+		const mockGetAlt = jest.fn((i) => i);
+		const mockGetKey = jest.fn((url) => url);
+		const el = render(<PhotoGallery isLoading={false} urls={mockUrls} getAlt={mockGetAlt} getKey={mockGetKey} />);
+		expect(mockGetAlt).toBeCalledTimes(mockUrls.length);
+		expect(mockGetKey).toBeCalledTimes(mockUrls.length);
+		const photoContainer = el.getByTestId(Constants.PHOTO_CONTAINER);
+		expect(photoContainer).toBeTruthy();
+		expect(photoContainer.childNodes.length).toBe(mockUrls.length);
+	});
 });

@@ -23,6 +23,11 @@ const defaultLoading = locales.defaultLoading;
 
 const defaultError = locales.defaultError;
 
+export const Constants = {
+	LOADING_TESTID: 'LOADING_TESTID',
+	ERROR_TESTID: 'ERROR_TESTID'
+};
+
 export const LoadingErrorContainer = ({
 	children,
 	isLoading = false,
@@ -38,8 +43,8 @@ export const LoadingErrorContainer = ({
 	return (
 		<ErrorBoundary>
 			<Container>
-				{isLoading && <CoverContainer>{LoadingComponent || defaultLoading}</CoverContainer>}
-				{(propsError || didCatch) && <CoverContainer>
+				{isLoading && <CoverContainer data-testid={Constants.LOADING_TESTID}>{LoadingComponent || defaultLoading}</CoverContainer>}
+				{(propsError || didCatch) && <CoverContainer data-testid={Constants.ERROR_TESTID}>
 					{ErrorComponent || (propsError || error)?.msg || defaultError}
 				</CoverContainer>}
 				{children}
