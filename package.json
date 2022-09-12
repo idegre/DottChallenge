@@ -23,8 +23,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "jest": "jest --coverage",
     "eject": "react-scripts eject"
@@ -67,11 +67,6 @@
   },
   "resolutions": {
     "styled-components": "^5"
-  },
-  "react-dotenv": {
-    "whitelist": [
-      "BREEDS_API_URL"
-    ]
   },
   "jest": {
     "testEnvironment": "jsdom"
