@@ -69,6 +69,5 @@
     "styled-components": "^5"
   },
   "jest": {
-    "testEnvironment": "jsdom"
   }
 }

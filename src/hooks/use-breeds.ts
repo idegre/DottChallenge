@@ -24,16 +24,17 @@ export const useBreeds = () => {
 
 	const getBreedPhotos = useCallback((userQuery: string) => {
 		if (isLoadingList || !breedsList || error) return;
-		// eslint-disable-next-line no-useless-escape
-		const words = userQuery.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').toLowerCase().split(' ');
-		const breed = breedsList.find(b => words.includes(b.toLowerCase()));
-
+		const words = userQuery.toLowerCase().replaceAll('_','-').split('-');
+		const breed = breedsList.find(b => words.includes(b.toLowerCase()) || b === words.join(''));
 		if(!breed) {
 			setError(errors.breedNotFound);
 			return;
 		}
-
-		breed && fetchPhotos(breed);
+		try{
+			return breed && fetchPhotos(breed);
+		} catch {
+			setError(errors.fetchError);
+		}
 	}, [isLoadingList, breedsList, fetchPhotos]);
     
 	return {isLoading: isLoadingList || isLoadingPhotos, photos, getBreedPhotos, error};

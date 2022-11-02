@@ -4,7 +4,7 @@ import {BreedListResponse, BreedResponse} from './types';
 
 export const rootResponseTransform = (data: BreedResponse) => data.message;
 
-export const listResponseTransform = (data: BreedListResponse): string[] => Object.entries(data.message).flat(2);
+export const listResponseTransform = (data: BreedListResponse): string[] => Object.keys(data.message);
 
 export const api = createApi({
 	baseQuery: fetchBaseQuery({baseUrl: process.env.REACT_APP_BREEDS_API_URL}),

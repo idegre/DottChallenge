@@ -1,14 +1,11 @@
-import React, { ChangeEvent, LegacyRef, SyntheticEvent, useCallback, useRef } from 'react';
-import {useSelector} from 'react-redux';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
 import {AppError, LoadingErrorContainer} from '../../components/LoadingErrorContainer';
-import {getUserImageAsset} from '../../store/slices/userImage/selectors';
 import { Container, HiddenInput, ImageContainer, VisibleInput } from './styled';
 
 import locales from '../../locales/en';
 
 type Props = {
-  onLoad: (evt: SyntheticEvent<HTMLImageElement, Event>) => void,
-  onInputChange: (evt: ChangeEvent<HTMLInputElement>) => void,
+  onChange: (img: React.MutableRefObject<HTMLImageElement>, url: string | null) => void,
   isLoading?: boolean,
   error?: AppError | null
 }
@@ -19,15 +16,23 @@ const inputProps = {
 	accept:'image/jpeg;image/gif;image/tif;image/tiff;image/jpg;image/png'
 };
 
-export const ImageSelector = ({onLoad, onInputChange, isLoading = false, error}: Props) => {
-	const selectedImage = useSelector(getUserImageAsset);
+export const ImageSelector = ({onChange, isLoading = false, error}: Props) => {
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const inputRef = useRef<HTMLInputElement>(null);
-	const imageRef = useRef<LegacyRef<HTMLImageElement>>();
+	const imageRef = useRef<HTMLImageElement>() as React.MutableRefObject<HTMLImageElement>;
 
 	const handleClick = useCallback(() => {
 		inputRef.current?.click();
 	}, []);
+
+	const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+		e.target?.files && setSelectedImage(URL.createObjectURL(e.target.files[0]));
+	}, []);
+
+	const handleLoad = useCallback(() => {
+		onChange(imageRef, selectedImage);
+	}, [selectedImage]);
 
 	return (
 		<LoadingErrorContainer isLoading={isLoading} error={error}>
@@ -36,9 +41,9 @@ export const ImageSelector = ({onLoad, onInputChange, isLoading = false, error}:
 					<ImageContainer>
 						<img
 							src={selectedImage}
-							onLoad={onLoad}
+							onLoad={handleLoad}
 							alt="user's upload"
-							ref={imageRef.current}
+							ref={imageRef}
 						/>
 					</ImageContainer>
 				) : (<>
@@ -47,7 +52,7 @@ export const ImageSelector = ({onLoad, onInputChange, isLoading = false, error}:
 						<input
 							{...inputProps}
 							ref={inputRef}
-							onChange={onInputChange}
+							onChange={handleInput}
 						/>
 					</HiddenInput>
 				</>
